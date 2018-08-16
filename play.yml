@@ -1,0 +1,74 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+    - name: Install Packages
+      yum: name={{ item }} state=present
+      with_items:
+          - php72u-common.x86_64
+          - php72u-fpm.x86_64
+          - php72u-fpm-nginx.noarch
+          - php72u-json.x86_64
+          - php72u-mbstring.x86_64
+          - php72u-mysqlnd.x86_64
+          - php72u-pdo.x86_64
+
+    - name: restart service php-fpm on centos, in all cases, also issue daemon-reload to pick up config changes
+      systemd:
+        state: restarted
+        daemon_reload: yes
+        name: php-fpm
+  roles:
+    - role: php
+      php_memory_limit: "128M"
+      php_max_execution_time: "90"
+      php_upload_max_filesize: "256M"
+      php_packages:
+        - php72u-json
+        - php72u-mysqlnd
+        - php72u-mbstring
+      php_enable_php_fpm: true
+      php_fpm_listen: "127.0.0.1:9000"
+      php_fpm_listen_allowed_clients: "127.0.0.1"
+      php_fpm_pm_max_children: 50
+      php_fpm_pm_start_servers: 5
+      php_fpm_pm_min_spare_servers: 5
+      php_fpm_pm_max_spare_servers: 5
+      php_webserver_daemon: nginx
+      php_fpm_pool_user: "php-fpm"
+      php_fpm_pool_group: "php-fpm"
+    - role: nginx
+      nginx_configs:
+        proxy:
+        - proxy_set_header X-Real-IP  $remote_addr
+        - proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for
+      nginx_sites:
+        default:
+        - listen 80
+        - server_name _
+        - root "/usr/share/nginx/html"
+        - index index.html
+        - location /nginx_status {
+              stub_status on;
+              access_log   off;
+              allow 127.0.0.1;
+              deny all;
+          }
+        - location /phpMyAdmin {
+          root /var/www/html/;
+          index index.php index.html index.htm;
+          location ~ ^/phpMyAdmin/(.+\.php)$ {
+                  try_files $uri =404;
+                  root /var/www/html/;
+                  fastcgi_pass 127.0.0.1:9000;
+                  fastcgi_index index.php;
+                  fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                  include /etc/nginx/fastcgi_params;
+                  }
+          location ~* ^/phpMyAdmin/(.+\.(jpg|jpeg|gif|css|png|js|ico|html|xml|txt))$  {
+                  root /var/www/html/;
+                  }
+          }
+          location /phpmyadmin {
+                  rewrite ^/* /phpMyAdmin last;
+                  }
