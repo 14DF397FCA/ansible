@@ -1,2 +1,6 @@
 [localhost]
 localhost
+
+[aruba]
+212.237.36.34 ansible_user=uzer
+80.211.63.157 ansible_user=uzer
