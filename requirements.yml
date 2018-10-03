@@ -18,3 +18,7 @@
   scm: git
   version: 'master'
 
+- src: https://github.com/GROG/ansible-role-package.git
+  scm: git
+  version: 'master'
+
