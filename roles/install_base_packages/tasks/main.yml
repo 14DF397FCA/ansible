@@ -1,0 +1,9 @@
+- name: Install Packages
+  yum: name={{ item }} state=present
+  with_items:
+    - nginx
+    - nano
+    - zsh
+    - wget
+    - git
+    - yum-utils
