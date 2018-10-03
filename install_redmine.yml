@@ -6,29 +6,27 @@
       package_list:
         name: htop
         name: httpd
-#    - role: bngsudheer.centos_base
-#      centos_base_enable_epel: true
-#      centos_base_basic_packages: true
-#      centos_base_secure_sshd: true
-#      centos_base_basic_vim_tweaks: true
-#      centos_base_htop_configuration: true
-#      centos_base_fail2ban_configuration: true
-#      centos_base_selinux_packages: true
-#    - role: bertvv.mariadb
-#      mariadb_root_password: eijah9Ahgh6iecae6eel
-#      mariadb_users:
-#        - name: redmine
-#          password: shohbahTho5iuYoas9Ie
-#          priv: '*.*:ALL,GRANT'
-#      mariadb_databases:
-#        - name: redmine
-#    - role: bngsudheer.redmine
-#      redmine_sql_driver: mysql2
-#      redmine_sql_username: redmine
-#      redmine_sql_password: shohbahTho5iuYoas9Ie
-#      redmine_sql_database_name: redmine
-#      remmine_sql_database_host: localhost
-#      redmine_configure_selinux: yes
-#      redmine_domain_name: rm.shop-vl.ru
-#
-#
+    - role: bngsudheer.centos_base
+      centos_base_enable_epel: true
+      centos_base_basic_packages: true
+      centos_base_secure_sshd: true
+      centos_base_basic_vim_tweaks: true
+      centos_base_htop_configuration: true
+      centos_base_fail2ban_configuration: true
+      centos_base_selinux_packages: true
+    - role: bertvv.mariadb
+      mariadb_root_password: eijah9Ahgh6iecae6eel
+      mariadb_users:
+        - name: redmine
+          password: shohbahTho5iuYoas9Ie
+          priv: '*.*:ALL,GRANT'
+      mariadb_databases:
+        - name: redmine
+    - role: bngsudheer.redmine
+      redmine_sql_driver: mysql2
+      redmine_sql_username: redmine
+      redmine_sql_password: shohbahTho5iuYoas9Ie
+      redmine_sql_database_name: redmine
+      remmine_sql_database_host: localhost
+      redmine_configure_selinux: yes
+      redmine_domain_name: rm.shop-vl.ru
