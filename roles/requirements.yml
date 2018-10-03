@@ -14,3 +14,7 @@
   scm: git
   version: 'master'
 
+- src: https://github.com/bertvv/ansible-role-mariadb.git
+  scm: git
+  version: 'master'
+
