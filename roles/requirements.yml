@@ -1,0 +1,16 @@
+- src: https://github.com/bngsudheer/ansible-role-redmine.git
+  scm: git
+  version: 'master'
+
+- src: https://github.com/bngsudheer/ansible-role-centos_base.git
+  scm: git
+  version: 'master'
+
+- src: https://github.com/jdauphant/ansible-role-nginx.git
+  scm: git
+  version: 'master'
+
+- src: https://github.com/geerlingguy/ansible-role-php.git
+  scm: git
+  version: 'master'
+
