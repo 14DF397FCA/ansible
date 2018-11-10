@@ -15,17 +15,17 @@
       centos_base_fail2ban_configuration: true
       centos_base_selinux_packages: true
     - role: bertvv.mariadb
-      mariadb_root_password: eijah9Ahgh6iecae6eel
+      mariadb_root_password: "{{ MARIADB_ROOT_PASSWORD }}"
       mariadb_users:
         - name: redmine
-          password: shohbahTho5iuYoas9Ie
+          password: "{{ MARIADB_USER_REDMINE }}"
           priv: '*.*:ALL,GRANT'
       mariadb_databases:
         - name: redmine
     - role: bngsudheer.redmine
       redmine_sql_driver: mysql2
       redmine_sql_username: redmine
-      redmine_sql_password: shohbahTho5iuYoas9Ie
+      redmine_sql_password: "{{ MARIADB_USER_REDMINE }}"
       redmine_sql_database_name: redmine
       remmine_sql_database_host: localhost
       redmine_configure_selinux: yes
