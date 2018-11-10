@@ -1,11 +1,12 @@
 [localhost]
 localhost
 
-[aruba]
-212.237.36.34 ansible_user=uzer
-
 [redmine]
 212.237.36.34 ansible_user=uzer
 
 [vpn]
 212.237.36.34 ansible_user=uzer
+
+[docker]
+212.237.36.34 ansible_user=uzer
+
