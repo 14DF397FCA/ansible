@@ -2,110 +2,110 @@
 - hosts: localhost
   become: yes
   roles:
-    - role: ansible-role-package
-      package_list:
-        name: htop
-        name: nano
-        name: net-tools
-        name: zsh
-        name: wget
-        name: git
-        name: php56-php-fpm.x86_64
-        name: php56-php.x86_64
-        name: php56-php-bcmath.x86_64
-        name: php56-php-cli.x86_64
-        name: php56-php-common.x86_64
-        name: php56-php-gd.x86_64
-        name: php56-php-ldap.x86_64
-        name: php56-php-mbstring.x86_64
-        name: php56-php-mysqlnd.x86_64
-        name: php56-php-pdo.x86_64
-        name: php56-php-xml.x86_64
-    - role: php
-      php_memory_limit: "128M"
-      php_max_execution_time: "90"
-      php_upload_max_filesize: "256M"
-      php_packages:
-        - php72u-json
-        - php72u-mysqlnd
-        - php72u-mbstring
-      php_enable_php_fpm: true
-      php_fpm_listen: "127.0.0.1:9000"
-      php_fpm_listen_allowed_clients: "127.0.0.1"
-      php_fpm_pm_max_children: 50
-      php_fpm_pm_start_servers: 5
-      php_fpm_pm_min_spare_servers: 5
-      php_fpm_pm_max_spare_servers: 5
-      php_webserver_daemon: nginx
-      php_fpm_pool_user: "php-fpm"
-      php_fpm_pool_group: "php-fpm"
-    - role: nginx
-      nginx_configs:
-        proxy:
-        - proxy_set_header X-Real-IP  $remote_addr
-        - proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for
-      nginx_sites:
-        default:
-        - listen 80
-        - server_name _
-        - root "/usr/share/nginx/html"
-        - index index.html
-        - location /nginx_status {
-              stub_status on;
-              access_log   off;
-              allow 127.0.0.1;
-              deny all;
-          }
-        - location /phpMyAdmin {
-          root /var/www/html/;
-          index index.php index.html index.htm;
-          location ~ ^/phpMyAdmin/(.+\.php)$ {
-                  try_files $uri =404;
-                  root /var/www/html/;
-                  fastcgi_pass 127.0.0.1:9000;
-                  fastcgi_index index.php;
-                  fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-                  include /etc/nginx/fastcgi_params;
-                  }
-          location ~* ^/phpMyAdmin/(.+\.(jpg|jpeg|gif|css|png|js|ico|html|xml|txt))$  {
-                  root /var/www/html/;
-                  }
-          }
-          location /phpmyadmin {
-                  rewrite ^/* /phpMyAdmin last;
-                  }
-          location /pma {
-                  rewrite ^/* /phpMyAdmin last;
-                  }
-        - location /zabbix {
+  - role: ansible-role-package
+    package_list:
+      name: htop
+      name: nano
+      name: net-tools
+      name: zsh
+      name: wget
+      name: git
+      name: php56-php-fpm.x86_64
+      name: php56-php.x86_64
+      name: php56-php-bcmath.x86_64
+      name: php56-php-cli.x86_64
+      name: php56-php-common.x86_64
+      name: php56-php-gd.x86_64
+      name: php56-php-ldap.x86_64
+      name: php56-php-mbstring.x86_64
+      name: php56-php-mysqlnd.x86_64
+      name: php56-php-pdo.x86_64
+      name: php56-php-xml.x86_64
+  - role: php
+    php_memory_limit: "128M"
+    php_max_execution_time: "90"
+    php_upload_max_filesize: "256M"
+    php_packages:
+    - php72u-json
+    - php72u-mysqlnd
+    - php72u-mbstring
+    php_enable_php_fpm: true
+    php_fpm_listen: "127.0.0.1:9000"
+    php_fpm_listen_allowed_clients: "127.0.0.1"
+    php_fpm_pm_max_children: 50
+    php_fpm_pm_start_servers: 5
+    php_fpm_pm_min_spare_servers: 5
+    php_fpm_pm_max_spare_servers: 5
+    php_webserver_daemon: nginx
+    php_fpm_pool_user: "php-fpm"
+    php_fpm_pool_group: "php-fpm"
+  - role: nginx
+    nginx_configs:
+      proxy:
+      - proxy_set_header X-Real-IP  $remote_addr
+      - proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for
+    nginx_sites:
+      default:
+      - listen 80
+      - server_name _
+      - root "/usr/share/nginx/html"
+      - index index.html
+      - location /nginx_status {
+        stub_status on;
+        access_log   off;
+        allow 127.0.0.1;
+        deny all;
+        }
+      - location /phpMyAdmin {
+        root /var/www/html/;
+        index index.php index.html index.htm;
+        location ~ ^/phpMyAdmin/(.+\.php)$ {
+        try_files $uri =404;
+        root /var/www/html/;
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include /etc/nginx/fastcgi_params;
+        }
+        location ~* ^/phpMyAdmin/(.+\.(jpg|jpeg|gif|css|png|js|ico|html|xml|txt))$  {
+        root /var/www/html/;
+        }
+        }
+        location /phpmyadmin {
+        rewrite ^/* /phpMyAdmin last;
+        }
+        location /pma {
+        rewrite ^/* /phpMyAdmin last;
+        }
+      - location /zabbix {
           root /usr/share;
           access_log /var/log/nginx/zabbix.access.log;
           index index.php index.html index.htm;
           location ~ \.php$
-                  {
-                  fastcgi_pass 127.0.0.1:9000;
-                  fastcgi_index index.php;
-                  fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-                  include fastcgi_params;
-                  fastcgi_param PHP_VALUE "
-                  max_execution_time = 300
-                  memory_limit = 128M
-                  post_max_size = 16M
-                  upload_max_filesize = 2M
-                  max_input_time = 300
-                  date.timezone = utc-0
-                  always_populate_raw_post_data = -1
-                  ";
-                  fastcgi_buffers 8 256k;
-                  fastcgi_buffer_size 128k;
-                  fastcgi_intercept_errors on;
-                  fastcgi_busy_buffers_size 256k;
-                  fastcgi_temp_file_write_size 256k;
-                  }
+        {
+          fastcgi_pass 127.0.0.1:9000;
+          fastcgi_index index.php;
+          fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+          include fastcgi_params;
+          fastcgi_param PHP_VALUE "
+          max_execution_time = 300
+          memory_limit = 128M
+          post_max_size = 16M
+          upload_max_filesize = 2M
+          max_input_time = 300
+          date.timezone = utc-0
+          always_populate_raw_post_data = -1
+          ";
+          fastcgi_buffers 8 256k;
+          fastcgi_buffer_size 128k;
+          fastcgi_intercept_errors on;
+          fastcgi_busy_buffers_size 256k;
+          fastcgi_temp_file_write_size 256k;
+        }
           }
-  tasks:
-    - name: restart service php-fpm on centos, in all cases, also issue daemon-reload to pick up config changes
-      systemd:
-        state: restarted
-        daemon_reload: yes
-        name: php-fpm
+  post_tasks:
+  - name: restart service php-fpm on centos, in all cases, also issue daemon-reload to pick up config changes
+    systemd:
+      state: restarted
+      daemon_reload: yes
+      name: php-fpm
