@@ -1,0 +1,9 @@
+- hosts: vpn
+  become: yes
+  gather_facts: true
+  roles:
+    - role: kyl191.openvpn
+      clients: [z50,reds3,dell,vdk]
+      openvpn_client_register_dns: false
+      openvpn_masquerade_not_snat: true
+
