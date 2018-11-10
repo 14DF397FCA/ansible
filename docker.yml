@@ -1,0 +1,34 @@
+- hosts: docker
+  become: yes
+  gather_facts: true
+  vars_files:
+  - ./vars/vault.yml
+  roles:
+  - role: ansible-role-docker
+    docker_edition: 'ce'
+    docker_package_state: present
+    docker_service_state: started
+    docker_service_enabled: true
+    docker_restart_handler_state: restarted
+    docker_install_compose: true
+    docker_compose_version: "1.23.1"
+    docker_compose_path: /usr/bin/docker-compose
+  post_tasks:
+  - name: Install PIP2
+    easy_install:
+      name: pip
+      state: latest
+  - name: Install python module docker
+    pip:
+      name: docker
+  - name: Create a Telegram container
+    docker_container:
+      image: telegrammessenger/proxy
+      name: mtproto-proxy
+      state: started
+      restart_policy: always
+      env:
+        SECRET: "{{ TELEGRAM_SECRETS }}"
+      volume_driver: /data
+      ports:
+      - 8443:443
