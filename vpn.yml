@@ -2,8 +2,8 @@
   become: yes
   gather_facts: true
   roles:
-    - role: kyl191.openvpn
-      clients: [z50,reds3,dell,vdk]
+    - role: ansible-role-openvpn
+      clients: [ods,lera-iphone,lera-ipad, lera-pc, green-mac, green-phone, meukh-phone, lenovo-10, arseniy-phone, larisa_samsung]
       openvpn_client_register_dns: false
       openvpn_masquerade_not_snat: true
 
